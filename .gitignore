@@ -1,0 +1,18 @@
+# R / RStudio
+.Rproj.user/
+.Rhistory
+.RData
+.Ruserdata
+
+# Data: raw Inside Airbnb files are large; re-download with R/01_download.R
+data/raw/*
+!data/raw/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+
+# OS clutter
+.DS_Store
+Thumbs.db
+.Rproj.user
+.httr-oauth
+.quarto
