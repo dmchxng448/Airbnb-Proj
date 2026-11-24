@@ -6,8 +6,8 @@ Inspired by past trips to **Toronto, Vancouver, and Ottawa,** this project inves
 
 ### Research Questions:
 
-1. Which listing and host characteristics are associated with the odds that an established Canadian Airbnb listing holds an overall rating of 4.9 or higher?
-2. Do these predictors of "excellence" differ across Toronto, Vancouver, and Ottawa
+1. Among established listings (10+ reviews) in Toronto, Vancouver, and Ottawa, which characteristics (nightly price, room type, capacity, superhost status, host listing count) are associated with the odds of an overall rating of 4.9 or higher?
+2. Does the association between nightly price and the odds of a 4.9+ rating differ across Toronto, Vancouver, and Ottawa?
 
 ### Data Sources:
 
