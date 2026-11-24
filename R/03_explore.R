@@ -8,8 +8,8 @@ d <- read_rds(here("data", "processed", "listings_clean.rds"))
 
 # Plot 1 : rating dist.
 p1 <- ggplot(d, aes(rating)) +
-  geom_histogram(binwidth = 0.05, boundary = 5) +
-  geom_vline(xintercept = 4.9, linetype = "dashed") +
+  geom_histogram(binwidth = 0.05, boundary = 5, fill = poster_red) +
+  geom_vline(xintercept = 4.9, linetype = "dashed", colour = poster_dark) +
   facet_wrap(~ city) +
   labs(x = "Overall rating", y = "Listings")
 ggsave(here("output", "figures", "rating_distribution.png"), p1, width = 9, height = 3.5, dpi = 300)
@@ -18,7 +18,7 @@ ggsave(here("output", "figures", "rating_distribution.png"), p1, width = 9, heig
 p2 <- d |>
   group_by(city, price_bin = cut(log_price, breaks = 10)) |>
   summarise(p = mean(excellent), x = mean(log_price), n = n(), .groups = "drop") |>
-  ggplot(aes(x, p, colour = city)) + geom_point(aes(size = n)) + geom_line() +
+  ggplot(aes(x, p, colour = city)) + geom_point(aes(size = n)) + geom_line() + scale_colour_manual(values = city_cols) +
   labs(x = "log(nightly price)", y = "Proportion rated 4.9+")
 ggsave(here("output", "figures", "excellent_vs_price.png"), p2, width = 7, height = 4, dpi = 300)
 

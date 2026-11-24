@@ -14,7 +14,7 @@ print(pROC::auc(roc_obj)); print(pROC::ci.auc(roc_obj))
 # Area under the curve: 0.6699 <- no overfitting
 # 95% CI: 0.6532-0.6865 (DeLong)
 png(here("output", "figures", "roc_test.png"), width = 1600, height = 1600, res = 300)
-plot(roc_obj, legacy.axes = TRUE, main = sprintf("Test AUC = %.3f", pROC::auc(roc_obj)))
+plot(roc_obj, legacy.axes = TRUE, col = poster_red, lwd = 3, main = sprintf("Test AUC = %.3f", pROC::auc(roc_obj)))
 dev.off()
 
 # 2. Calibration: predicted vs observed proportion in 10 groups (by predicted prob.)
@@ -34,7 +34,7 @@ print(cal)
 #     8 0.576 0.541   399
 #     9 0.613 0.617   399
 #    10 0.659 0.667   399
-pc <- ggplot(cal, aes(pred, obs)) + geom_abline(linetype = "dashed") + geom_point(size = 2) +
+pc <- ggplot(cal, aes(pred, obs)) + geom_abline(linetype = "dashed", colour = "grey50") + geom_point(size = 2.5, colour = poster_red) +
   coord_equal(xlim = c(0, 1), ylim = c(0, 1)) +
   labs(x = "Mean predicted probability", y = "Observed proportion excellent")
 ggsave(here("output", "figures", "calibration_test.png"), pc, width = 4.5, height = 4.5, dpi = 300)
