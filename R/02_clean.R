@@ -42,23 +42,26 @@ listings <- raw |>
   filter(n_reviews >= 10) |> log_step("after >= 10 reviews") |>         # rating is unstable with few reviews
   filter(!is.na(rating)) |> log_step ("after non-missing rating") |>    # ratings should have comments to be reliable source
   filter(!is.na(price), price > 0) |> log_step("after valid price") |>  # filter out listings without price points
+  filter(room_type %in% c("Entire home/apt", "Private room")) |>        # ADD: restrict to entire homes/private rooms (51 hotels+13 shared rooms ONLY)
 
   # New variables
+  # - excellence cut-off
+  # - ADD: 64 listings dropped for room_type
   mutate(
-    excellent  = as.integer(rating >= 4.9),          # excellence cut-off
+    excellent  = as.integer(rating >= 4.9),
     log_price  = log(price),
     multi_host = host_listings > 1,
-    room_type  = factor(room_type),
+    room_type  = droplevels(factor(room_type)),
     city       = factor(city, levels = c("toronto", "vancouver", "ottawa"))
   ) |>
   filter(!is.na(superhost)) |> log_step("after non-missing superhost")
 
 # --- AFTER CLEANING ---
-message("Rows after cleaning: ", nrow(listings))                    # total rows 13386
-message("Rows per city (cleaned):"); print(table(listings$city))    # yow=1295, tor=8686, yvr=3405
+message("Rows after cleaning: ", nrow(listings))                    # total rows 13322
+message("Rows per city (cleaned):"); print(table(listings$city))    # yow=1292, tor=8628, yvr=3402
 message("Share of excellent listings per city:"); print(round(
-  tapply(listings$excellent, listings$city, mean), 3))              # yow=0.392, tor=0.439, yvr=0.454
+  tapply(listings$excellent, listings$city, mean), 3))              # yow=.393, tor=.437, yvr=.454
 message("Rows dropped: ", nrow(raw) - nrow(listings), " (", round(
-  100 * (1 - nrow(listings) / nrow(raw)), 1), "%)")                 # dropped 17601 (56.8%)
+  100 * (1 - nrow(listings) / nrow(raw)), 1), "%)")                 # dropped 17665 (57%)
 
 write_rds(listings, here("data", "processed", "listings_clean.rds"))

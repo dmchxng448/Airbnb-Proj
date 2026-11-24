@@ -30,79 +30,77 @@ colSums(is.na(d))   # 0 across the board
 # Overall class balance
 d |> count(excellent) |> mutate(share = n / sum(n)) |> print()
 # excellent     n share
-#         0  7524 0.562
-#         1  5862 0.438
+#         0  7499 0.563
+#         1  5823 0.437
 
 # Cutoff sensitivity
 sapply(c(4.7, 4.8, 4.9, 5.0), \(k) mean(d$rating >= k))   # 4.9 ideal - once start accounting for anything lower, sample size spikes by min. 30%
-# [1] 0.8405050 0.7021515 0.4379202 0.1123562
+# [1] 0.8402642 0.7014713 0.4370965 0.1113196
 
 # superhost more likely to be >4.9
 d |> group_by(city, superhost) |> summarise(p_excellent = mean(excellent), n = n(), .groups = "drop") |> print()
-#   city      superhost p_excellent     n
-# 1 toronto   FALSE           0.296  3592
-# 2 toronto   TRUE            0.539  5094
-# 3 vancouver FALSE           0.306  1374
-# 4 vancouver TRUE            0.554  2031
-# 5 ottawa    FALSE           0.220   527
-# 6 ottawa    TRUE            0.510   768
+# city      superhost p_excellent     n
+# toronto   FALSE           0.296  3586
+# toronto   TRUE            0.537  5042
+# vancouver FALSE           0.306  1372
+# vancouver TRUE            0.554  2030
+# ottawa    FALSE           0.221   524
+# ottawa    TRUE            0.510   768
 
 # hotel types tend to have higher ratings (makes sense - company vs individually run)
 d |> group_by(room_type) |> summarise(p_excellent = mean(excellent), n = n()) |> print()
 # room_type         p_excellent     n
 # 1 Entire home/apt       0.458  9906
-# 2 Hotel room            0.706    51
-# 3 Private room          0.377  3416
-# 4 Shared room           0.231    13
+# 2 Private room          0.377  3416
 
-#
 d |> group_by(multi_host) |> summarise(p = mean(excellent), n = n()) |> print()   # little effect - ignore
 # multi_host     p     n
-# FALSE      0.486  8356
-# TRUE       0.358  5030
+# FALSE      0.486  8350
+# TRUE       0.355  4972
 
 d |> group_by(accommodates) |> summarise(p = mean(excellent), n = n()) |> print()   # little effect - ignore
 # accommodates     p     n
-# 1            1 0.383   904
-# 2            2 0.447  4669
-# 3            3 0.459  1268
-# 4            4 0.425  3140
-# 5            5 0.439   800
-# 6            6 0.435  1463
-# 7            7 0.442   226
-# 8            8 0.485   491
-# 9            9 0.458    59
-# 10           10 0.451   184
-# 11           11 0.409    22
-# 12           12 0.430    79
-# 13           13 0.333     3
-# 14           14 0.375    32
-# 15           15 0.286     7
-# 16           16 0.436    39
+#            1 0.384   898
+#            2 0.448  4662
+#            3 0.455  1258
+#            4 0.424  3127
+#            5 0.437   792
+#            6 0.435  1454
+#            7 0.429   219
+#            8 0.484   488
+#            9 0.458    59
+#           10 0.448   183
+#           11 0.409    22
+#           12 0.430    79
+#           13 0.333     3
+#           14 0.375    32
+#           15 0.286     7
+#           16 0.436    39
 
 d |> group_by(host_listings) |> summarise(p = mean(excellent), n = n()) |> print()    # little effect - ignore
 # host_listings     p     n
-#             1 0.486  8356
-#             2 0.392  1649
-#             3 0.359  1278
-#             4 0.357   462
-#             5 0.351   308
+#             1 0.486  8350
+#             2 0.394  1640
+#             3 0.358  1274
+#             4 0.358   461
+#             5 0.35    300
 #             6 0.322   183
 #             7 0.370   138
 #             8 0.331   130
-#             9 0.480   102
-#            10 0.477    44
+#             9 0.447    85
+#            10 0.361    36
+# ℹ 32 more rows
 
 # Rare categories and correlation
 count(d, room_type, sort = TRUE)
 # room_type           n
 # Entire home/apt  9906
 # Private room     3416
-# Hotel room         51
-# Shared room        13
+# REMOVEDHotel room         51
+# REMOVEDShared room        13
 
 cor(d[, c("log_price", "accommodates", "host_listings")], use = "complete.obs")
-#                 log_price accommodates host_listings
-# log_price      1.00000000   0.61099725   -0.08700397
-# accommodates   0.61099725   1.00000000   -0.02365224
-# host_listings -0.08700397  -0.02365224    1.00000000
+#               log_price accommodates  host_listings
+# log_price      1.0000000   0.61027360   -0.08956090
+# accommodates   0.6102736   1.00000000   -0.02519145
+# host_listings -0.0895609  -0.02519145    1.00000000
