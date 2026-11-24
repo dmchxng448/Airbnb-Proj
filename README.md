@@ -20,7 +20,7 @@ This project uses publicly available short-term rental data from [Inside Airbnb]
 ### Variables:
 
 | Variable | Role | Definition |
-|----------|------|------|--------------|------------|
+|---|---|---|
 | `excellent` | Outcome | 1 if overall rating ≥ 4.9, else 0 |
 | `log_price` | Predictor | Natural log of the nightly price (CAD), after parsing `"$1,234.00"` to a number |
 | `room_type` | Predictor | Entire home/apt, private room, shared room, hotel room |
