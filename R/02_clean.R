@@ -65,3 +65,4 @@ message("Rows dropped: ", nrow(raw) - nrow(listings), " (", round(
   100 * (1 - nrow(listings) / nrow(raw)), 1), "%)")                 # dropped 17665 (57%)
 
 write_rds(listings, here("data", "processed", "listings_clean.rds"))
+write_csv(d, here("data", "processed", "listings_clean.csv"))
